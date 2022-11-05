@@ -63,9 +63,9 @@ jobs:
       
     - name: Upload jar on Azure VM
       run: |
-        ssh azure 'echo "/usr/lib/jvm/java-18-openjdk-arm64/bin/java -jar /JusticeBot/JusticeBot-1.0-SNAPSHOT.jar \"${{ secrets.BOT_TOKEN }}\" >> /JusticeBot/log.txt 2>> /JusticeBot/log.txt" > /JusticeBot/run.sh'
+        ssh azure 'echo "/usr/lib/jvm/java-18-openjdk-arm64/bin/java -jar /JusticeBot/JusticeBot-1.0-all.jar \"${{ secrets.BOT_TOKEN }}\" >> /JusticeBot/log.txt 2>> /JusticeBot/log.txt" > /JusticeBot/run.sh'
         ssh azure 'sudo chmod 700 /JusticeBot/run.sh'
-        scp build/libs/JusticeBot-1.0-SNAPSHOT.jar azure:/JusticeBot
+        scp build/libs/JusticeBot-1.0-all.jar azure:/JusticeBot
         
     - name: Start the bot
       run: ssh azure 'cd /JusticeBot ; sudo ./run.sh > /dev/null' &

@@ -1,12 +1,13 @@
 plugins {
     id 'java'
     id'application'
+    id'com.github.johnrengelman.shadow' version '5.2.0'
 }
 
 mainClassName = 'fr.reminator.justicebot.JusticeBot'
 
 group 'org.example'
-version '1.0-SNAPSHOT'
+version '1.0'
 
 repositories {
     mavenCentral()
