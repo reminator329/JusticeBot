@@ -10,10 +10,10 @@ repositories {
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
     implementation 'org.javacord:javacord:3.6.0'
-    runtimeOnly 'org.apache.logging.log4j:log4j-core:2.17.0'
+    runtimeOnly 'org.apache.logging.log4j:log4j-core:2.19.0'
 }
 
 test {
