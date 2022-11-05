@@ -1,4 +1,4 @@
-package fr.reminator.remibot;
+package fr.reminator.justicebot;
 
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
