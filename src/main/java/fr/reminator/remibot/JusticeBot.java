@@ -13,7 +13,7 @@ public class JusticeBot {
 
         api.addMessageCreateListener(event -> {
             if (event.getMessageContent().equalsIgnoreCase("!ping")) {
-                event.getChannel().sendMessage("Pong!");
+                event.getChannel().sendMessage("Pong !");
             }
         });
     }
