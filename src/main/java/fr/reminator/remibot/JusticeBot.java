@@ -12,12 +12,7 @@ public class JusticeBot {
         System.out.println(api.createBotInvite());
 
         api.addMessageCreateListener(event -> {
-            System.out.println("test");
-            System.out.println(event.getMessage());
-            System.out.println(event.getMessageContent());
-            System.out.println(event.getMessage().getContent());
-            if (event.getMessageContent().equalsIgnoreCase("a")) {
-                System.out.println("Bonjour");
+            if (event.getMessageContent().equalsIgnoreCase("!ping")) {
                 event.getChannel().sendMessage("Pong!");
             }
         });
