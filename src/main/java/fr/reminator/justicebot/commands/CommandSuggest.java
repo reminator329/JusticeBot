@@ -89,7 +89,7 @@ public class CommandSuggest extends Command {
             }
             channelId = guildSuggestions.getString("channel");
         } catch (JSONException e) {
-            e.printStackTrace();
+            event.getInteraction().createImmediateResponder().setContent("Les suggestions ne sont pas activées dans ce serveur. Veuillez contacter un modérateur pour activer cette commande.").setFlags(MessageFlag.EPHEMERAL).respond();
             return;
         }
 
