@@ -18,10 +18,15 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
     implementation 'org.javacord:javacord:3.6.0'
     runtimeOnly 'org.apache.logging.log4j:log4j-core:2.19.0'
+    implementation('org.json:json:20220924')// https://mvnrepository.com/artifact/com.vdurmont/emoji-java
+    implementation group: 'com.vdurmont', name: 'emoji-java', version: '4.0.0'
 }
 
 test {
     useJUnitPlatform()
 }
+
+compileJava.options.encoding = 'UTF-8'
+
 sourceCompatibility = 1.16
 targetCompatibility = 1.16
