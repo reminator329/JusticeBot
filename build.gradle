@@ -4,7 +4,7 @@ plugins {
     id'com.github.johnrengelman.shadow' version '5.2.0'
 }
 
-mainClassName = 'fr.reminator.justicebot.JusticeBot'
+mainClassName = 'fr.reminator.justicebot.main.JusticeBot'
 
 group 'org.example'
 version '1.0'
