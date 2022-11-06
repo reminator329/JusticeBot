@@ -1,2 +1,2 @@
 # JusticeBot
-[![Maintainability](https://api.codeclimate.com/v1/badges/3609007d4ea12c89c41d/maintainability)](https://codeclimate.com/github/reminator329/JusticeBot/maintainability)
+<a href="https://codeclimate.com/github/reminator329/JusticeBot/maintainability"><img src="https://api.codeclimate.com/v1/badges/21ba2b58ed2246815572/maintainability" /></a>
