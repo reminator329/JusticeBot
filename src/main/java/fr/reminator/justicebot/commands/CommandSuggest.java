@@ -2,6 +2,7 @@ package fr.reminator.justicebot.commands;
 
 import com.vdurmont.emoji.EmojiParser;
 import fr.reminator.justicebot.main.JusticeBot;
+import fr.reminator.justicebot.utils.JsonUtils;
 import org.javacord.api.entity.channel.Channel;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.MessageFlag;
@@ -24,6 +25,13 @@ import java.util.List;
 
 public class CommandSuggest extends Command {
 
+    private final JsonUtils jsonUtils;
+
+    public CommandSuggest() {
+        super();
+        this.jsonUtils = new JsonUtils(JusticeBot.fileSuggestions.getAbsoluteFile());
+    }
+
     @Override
     public String getLabel() {
         return "suggest";
@@ -31,7 +39,7 @@ public class CommandSuggest extends Command {
 
     @Override
     public String getDescription() {
-        return "Permet d'envoyer une suggestion au serveur (si activé)";
+        return "Permet d'envoyer une suggestion au serveur (si activée).";
     }
 
     @Override
@@ -58,21 +66,8 @@ public class CommandSuggest extends Command {
         String suggestionValue = suggestion.getStringValue().orElse(null);
         if (suggestionValue == null) return;
 
-        StringBuilder content = new StringBuilder();
-        String line;
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(JusticeBot.fileSuggestions.getAbsoluteFile()));
-            while ((line = br.readLine()) != null) {
-                content.append(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
-        }
-        if (content.toString().equals("")) {
-            content.append("{}");
-        }
-        JSONObject json = new JSONObject(content.toString());
+        String content = jsonUtils.read();
+        JSONObject json = new JSONObject(content);
 
         Server server = event.getInteraction().getServer().orElse(null);
         if (server == null) return;

@@ -1,14 +1,13 @@
 package fr.reminator.justicebot.commands;
 
 import fr.reminator.justicebot.main.JusticeBot;
+import fr.reminator.justicebot.utils.JsonUtils;
 import org.javacord.api.entity.channel.ServerChannel;
 import org.javacord.api.entity.message.MessageFlag;
 import org.javacord.api.entity.permission.PermissionType;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.event.interaction.SlashCommandCreateEvent;
 import org.javacord.api.interaction.*;
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -16,8 +15,11 @@ import java.util.List;
 
 public class CommandSuggestions extends Command {
 
+    private final JsonUtils jsonUtils;
+
     public CommandSuggestions() {
         super();
+        this.jsonUtils = new JsonUtils(JusticeBot.fileSuggestions.getAbsoluteFile());
         File fileSuggestions = JusticeBot.fileSuggestions;
         try {
             if (!fileSuggestions.exists()) {
@@ -45,10 +47,10 @@ public class CommandSuggestions extends Command {
     @Override
     public List<SlashCommandOption> getOptions() {
         return List.of(
-                SlashCommandOption.createWithOptions(SlashCommandOptionType.SUB_COMMAND, "enable", "Active les suggestions",
-                    List.of(SlashCommandOption.create(SlashCommandOptionType.CHANNEL, "channel", "Le channel où envoyer les suggestions", true))),
+                SlashCommandOption.createWithOptions(SlashCommandOptionType.SUB_COMMAND, "enable", "Active les suggestions.",
+                    List.of(SlashCommandOption.create(SlashCommandOptionType.CHANNEL, "channel", "Le channel où envoyer les suggestions.", true))),
 
-                SlashCommandOption.createWithOptions(SlashCommandOptionType.SUB_COMMAND, "disable", "Désactive les suggestions")
+                SlashCommandOption.createWithOptions(SlashCommandOptionType.SUB_COMMAND, "disable", "Désactive les suggestions.")
                 );
     }
 
@@ -88,21 +90,8 @@ public class CommandSuggestions extends Command {
 
     private ServerChannel enable(SlashCommandCreateEvent event) {
 
-        StringBuilder content = new StringBuilder();
-        String line;
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(JusticeBot.fileSuggestions.getAbsoluteFile()));
-            while ((line = br.readLine()) != null) {
-                content.append(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-        if (content.toString().equals("")) {
-            content.append("{}");
-        }
-        JSONObject json = new JSONObject(content.toString());
+        String content = jsonUtils.read();
+        JSONObject json = new JSONObject(content);
 
         Server server = event.getInteraction().getServer().orElse(null);
         if (server == null) return null;
@@ -121,33 +110,14 @@ public class CommandSuggestions extends Command {
         guildSuggestions.put("channel", idChannelAsString);
         json.put(idServeurAsString, guildSuggestions);
 
-        try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter(JusticeBot.fileSuggestions.getAbsoluteFile()));
-            bw.write(json.toString());
-            bw.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        jsonUtils.write(json.toString());
         return channelValue;
     }
 
     private void disable(SlashCommandCreateEvent event) {
 
-        StringBuilder content = new StringBuilder();
-        String line;
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(JusticeBot.fileSuggestions.getAbsoluteFile()));
-            while ((line = br.readLine()) != null) {
-                content.append(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
-        }
-        if (content.toString().equals("")) {
-            content.append("{}");
-        }
-        JSONObject json = new JSONObject(content.toString());
+        String content = jsonUtils.read();
+        JSONObject json = new JSONObject(content);
 
         Server server = event.getInteraction().getServer().orElse(null);
         if (server == null) return;
@@ -158,12 +128,6 @@ public class CommandSuggestions extends Command {
         guildSuggestions.put("channel", JSONObject.NULL);
         json.put(idServeurAsString, guildSuggestions);
 
-        try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter(JusticeBot.fileSuggestions.getAbsoluteFile()));
-            bw.write(json.toString());
-            bw.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        jsonUtils.write(json.toString());
     }
 }
