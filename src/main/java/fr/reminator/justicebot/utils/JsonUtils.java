@@ -1,7 +1,5 @@
 package fr.reminator.justicebot.utils;
 
-import fr.reminator.justicebot.main.JusticeBot;
-
 import java.io.*;
 
 public class JsonUtils {

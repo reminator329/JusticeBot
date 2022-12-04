@@ -1,5 +1,6 @@
-package fr.reminator.justicebot.commands;
+package fr.reminator.justicebot.commands.suggesions;
 
+import fr.reminator.justicebot.commands.Command;
 import fr.reminator.justicebot.main.JusticeBot;
 import fr.reminator.justicebot.utils.JsonUtils;
 import org.javacord.api.entity.channel.ServerChannel;

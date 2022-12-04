@@ -1,6 +1,10 @@
 package fr.reminator.justicebot.main;
 
 import fr.reminator.justicebot.commands.*;
+import fr.reminator.justicebot.commands.suggesions.CommandSuggestions;
+import fr.reminator.justicebot.commands.ping.CommandPing;
+import fr.reminator.justicebot.commands.rolemenu.CommandRoleMenu;
+import fr.reminator.justicebot.commands.suggest.CommandSuggest;
 
 import java.util.Arrays;
 import java.util.Set;
@@ -11,6 +15,7 @@ public enum Commands {
     PING(new CommandPing()),
     SUGGESTIONS(new CommandSuggestions()),
     SUGGESTION(new CommandSuggest()),
+    ROLE_MENU(new CommandRoleMenu()),
     ;
 
     private final Command command;

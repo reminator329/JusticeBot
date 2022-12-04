@@ -1,20 +1,16 @@
 package fr.reminator.justicebot.main;
 
-import fr.reminator.justicebot.listeners.CommandListener;
+import fr.reminator.justicebot.main.listeners.CommandListener;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
 import org.javacord.api.entity.activity.ActivityType;
-import org.javacord.api.entity.permission.PermissionType;
-import org.javacord.api.interaction.*;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
 
 public class JusticeBot {
 
     public final static File fileSuggestions = new File("suggestions.txt");
+    public final static File fileRoleMenu = new File("roleMenu.txt");
     public static DiscordApi api;
 
     public static void main(String[] args) {

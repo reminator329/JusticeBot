@@ -1,6 +1,7 @@
-package fr.reminator.justicebot.commands;
+package fr.reminator.justicebot.commands.suggest;
 
 import com.vdurmont.emoji.EmojiParser;
+import fr.reminator.justicebot.commands.Command;
 import fr.reminator.justicebot.main.JusticeBot;
 import fr.reminator.justicebot.utils.JsonUtils;
 import org.javacord.api.entity.channel.Channel;
@@ -18,9 +19,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.List;
 
 public class CommandSuggest extends Command {

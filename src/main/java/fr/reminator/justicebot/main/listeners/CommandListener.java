@@ -1,4 +1,4 @@
-package fr.reminator.justicebot.listeners;
+package fr.reminator.justicebot.main.listeners;
 
 import fr.reminator.justicebot.commands.Command;
 import fr.reminator.justicebot.main.Commands;

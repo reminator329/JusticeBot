@@ -1,6 +1,6 @@
-package fr.reminator.justicebot.commands;
+package fr.reminator.justicebot.commands.ping;
 
-import org.javacord.api.entity.permission.PermissionType;
+import fr.reminator.justicebot.commands.Command;
 import org.javacord.api.event.interaction.SlashCommandCreateEvent;
 import org.javacord.api.interaction.SlashCommandOption;
 
