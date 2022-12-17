@@ -35,6 +35,10 @@ public class ListRoleListener implements MessageComponentCreateListener {
         List<Role> possibleRoles = possibleOptions.stream().map(o -> server.getRoleById(o.getValue()).get()).collect(Collectors.toList());
         List<Role> roles = user.getRoles(server);
 
+        System.out.println("EOPIFGUZ?IEUFGZE HFN8UHZE9M FH9PZEH FMHZEIM FGNIZUEHFG IUHZEUI FG");
+        System.out.println(possibleRoles.stream().filter(role -> !chosenRoles.contains(role) && roles.contains(role)).collect(Collectors.toList()));
+        System.out.println(chosenRoles.stream().filter(role -> !roles.contains(role)).collect(Collectors.toList()));
+
         server.createUpdater()
                 .removeRolesFromUser(user, possibleRoles.stream().filter(role -> !chosenRoles.contains(role) && roles.contains(role)).collect(Collectors.toList()))
                 .addRolesToUser(user, chosenRoles.stream().filter(role -> !roles.contains(role)).collect(Collectors.toList()))

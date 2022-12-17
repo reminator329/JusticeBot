@@ -4,6 +4,7 @@ import fr.reminator.justicebot.main.listeners.CommandListener;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
 import org.javacord.api.entity.activity.ActivityType;
+import org.javacord.api.util.logging.FallbackLoggerConfiguration;
 
 import java.io.File;
 
@@ -26,6 +27,12 @@ public class JusticeBot {
         api.bulkOverwriteGlobalApplicationCommands(Commands.all()).join();
 
         api.addSlashCommandCreateListener(new CommandListener());
+        // Enable debug logging
+        FallbackLoggerConfiguration.setDebug(true);
+
+        // Enable trace logging
+        FallbackLoggerConfiguration.setTrace(true);
+
         System.out.println("Je suis prêt !");
     }
 }

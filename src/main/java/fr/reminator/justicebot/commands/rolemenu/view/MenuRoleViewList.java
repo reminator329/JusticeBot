@@ -16,6 +16,7 @@ import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 import org.javacord.api.interaction.ButtonInteraction;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -34,12 +35,8 @@ public class MenuRoleViewList implements MenuRoleView {
     @Override
     public void sendMenu(String idChannelOutput) {
 
-        MenuRoleGestion menuRoleGestion = MenuRoleGestion.getInstance(idChannelOutput);
-        Set<Map.Entry<String, String>> menu = menuRoleGestion.getMenu();
-
         Channel channel = JusticeBot.api.getChannelById(idChannelOutput).orElse(null);
         TextChannel textChannel = channel.asTextChannel().orElse(null);
-        ServerChannel serverChannel = channel.asServerChannel().orElse(null);
 
         new MessageBuilder()
                 .addComponents(
@@ -63,7 +60,7 @@ public class MenuRoleViewList implements MenuRoleView {
 
         MenuRoleGestion menuRoleGestion = MenuRoleGestion.getInstance(idChannelOutput);
         menuRoleGestion.updateFromJson();
-        Set<Map.Entry<String, String>> menu = menuRoleGestion.getMenu();
+        List<fr.reminator.justicebot.commands.rolemenu.model.Role> roles = menuRoleGestion.getRoles();
 
         ServerChannel serverChannel = textChannel.asServerChannel().orElse(null);
         Server server = serverChannel.getServer();
@@ -76,16 +73,16 @@ public class MenuRoleViewList implements MenuRoleView {
                                             .setCustomId(listCustomId)
                                             .setPlaceholder("Choisis tes rôles")
                                             .setMinimumValues(0)
-                                            .setMaximumValues(menu.size())
-                                            .addOptions(menu.stream().map(e -> {
-                                                Role role = server.getRoleById(e.getKey()).get();
-                                                String emojiString = EmojiParser.parseToUnicode(e.getValue());
+                                            .setMaximumValues(roles.size())
+                                            .addOptions(roles.stream().map(role -> {
+                                                Role guildRole = server.getRoleById(role.getIdRole()).get();
+                                                String emojiString = EmojiParser.parseToUnicode(role.getEmote());
+                                                String description = role.getDescription();
 
-                                                return new SelectMenuOptionBuilder()
-                                                        .setLabel(role.getName())
-                                                        .setValue(role.getIdAsString())
-                                                        .setDefault(user.getRoles(server).contains(role))
-                                                        // .setDescription(description)
+                                                SelectMenuOptionBuilder selectMenuOptionBuilder = new SelectMenuOptionBuilder()
+                                                        .setLabel(guildRole.getName())
+                                                        .setValue(guildRole.getIdAsString())
+                                                        .setDefault(user.getRoles(server).contains(guildRole))
                                                         .setEmoji(new Emoji() {
                                                             @Override
                                                             public Optional<String> asUnicodeEmoji() {
@@ -101,8 +98,11 @@ public class MenuRoleViewList implements MenuRoleView {
                                                             public String getMentionTag() {
                                                                 return null;
                                                             }
-                                                        })
-                                                        .build();
+                                                        });
+
+                                                if (description != null)
+                                                    selectMenuOptionBuilder.setDescription(description);
+                                                return selectMenuOptionBuilder.build();
                                             }).collect(Collectors.toList()))
                                             .build()
                             )

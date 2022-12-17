@@ -1,5 +1,6 @@
 package fr.reminator.justicebot.commands.rolemenu;
 
+import com.vdurmont.emoji.EmojiParser;
 import fr.reminator.justicebot.commands.Command;
 import fr.reminator.justicebot.commands.rolemenu.listeners.MenuRolesListener;
 import fr.reminator.justicebot.commands.rolemenu.model.MenuRoleGestion;
@@ -9,11 +10,13 @@ import fr.reminator.justicebot.main.JusticeBot;
 import org.javacord.api.entity.channel.ChannelType;
 import org.javacord.api.entity.channel.ServerChannel;
 import org.javacord.api.entity.channel.TextChannel;
+import org.javacord.api.entity.message.MessageFlag;
 import org.javacord.api.entity.message.component.*;
 import org.javacord.api.entity.permission.PermissionType;
 import org.javacord.api.entity.permission.Role;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.event.interaction.SlashCommandCreateEvent;
+import org.javacord.api.interaction.SlashCommandInteraction;
 import org.javacord.api.interaction.SlashCommandInteractionOption;
 import org.javacord.api.interaction.SlashCommandOption;
 import org.javacord.api.interaction.SlashCommandOptionType;
@@ -46,6 +49,12 @@ public class CommandRoleMenu extends Command {
         return List.of(
                 SlashCommandOption.createWithOptions(SlashCommandOptionType.SUB_COMMAND, "create", "Permet de créer un role-menu.", List.of(
                         SlashCommandOption.createChannelOption("channel", "Salon dans lequel créer le role-menu.", true, Set.of(ChannelType.SERVER_TEXT_CHANNEL))
+                )),
+                SlashCommandOption.createWithOptions(SlashCommandOptionType.SUB_COMMAND, "add-role", "Permet d'ajouter un rôle au role-menu.", List.of(
+                        SlashCommandOption.createChannelOption("channel", "Salon dans lequel le role-menu a été créé.", true, Set.of(ChannelType.SERVER_TEXT_CHANNEL)),
+                        SlashCommandOption.createRoleOption("role", "Rôle à ajouter dans le role-menu.", true),
+                        SlashCommandOption.createStringOption("emote", "Émote à associer au rôle.", true),
+                        SlashCommandOption.createStringOption("description", "Description du rôle.", true)
                 ))
         );
     }
@@ -62,34 +71,72 @@ public class CommandRoleMenu extends Command {
 
     @Override
     public void execute(SlashCommandCreateEvent event) {
-        TextChannel textChannel = event.getInteraction().getChannel().orElse(null);
-        if (textChannel == null) return;
 
-        SlashCommandInteractionOption create = event.getSlashCommandInteraction().getOptionByName("create").orElse(null);
-        if (create == null) return;
-        SlashCommandInteractionOption channel = create.getOptionByName("channel").orElse(null);
+        SlashCommandInteraction slashCommandInteraction = event.getSlashCommandInteraction();
+        List<SlashCommandInteractionOption> options = slashCommandInteraction.getOptions();
+        SlashCommandInteractionOption option = options.get(0);
+
+        String content = "";
+        switch (option.getName()) {
+            case "create" -> {
+                createMenu(option);
+                content = "Role-menu créé !";
+            }
+            case "add-role" -> {
+                addRole(option);
+                content = "Rôle ajouté !";
+            }
+        }
+        event.getInteraction().createImmediateResponder().setContent(content).setFlags(MessageFlag.EPHEMERAL).respond();
+    }
+
+    private void createMenu(SlashCommandInteractionOption option) {
+        SlashCommandInteractionOption channel = option.getOptionByName("channel").orElse(null);
         if (channel == null) return;
         ServerChannel serverChannel = channel.getChannelValue().orElse(null);
         if (serverChannel == null) return;
         String idAsString = serverChannel.getIdAsString();
 
-        Server server = event.getInteraction().getServer().orElse(null);
-        if (server == null) return;
+        MenuRoleGestion instance = MenuRoleGestion.getInstance(idAsString);
+        instance.clear();
+        instance.saveJson();
 
-        MenuRoleGestion.getInstance(idAsString).clear();
+        view.sendMenu(idAsString);
+    }
 
-        event.getInteraction().respondLater(true).thenAccept(interactionOriginalResponseUpdater -> {
-            JusticeBot.api.addListener(new MenuRolesListener(textChannel.getIdAsString(), idAsString, view));
-            event.getSlashCommandInteraction().createFollowupMessageBuilder()
-                    .setContent("Sélectionne un rôle à ajouter au menu.")
-                    .addComponents(
-                            ActionRow.of(
-                                    SelectMenu.create("menuRoles", "Clique ici pour choisir un rôle à ajouter.", 1, 1,
-                                            getListeRoles(server))
-                            )
-                    )
-                    .send();
-                });
+    private void addRole(SlashCommandInteractionOption option) {
+        SlashCommandInteractionOption channel = option.getOptionByName("channel").orElse(null);
+        if (channel == null) return;
+        ServerChannel serverChannel = channel.getChannelValue().orElse(null);
+        if (serverChannel == null) return;
+        String idAsString = serverChannel.getIdAsString();
+
+        SlashCommandInteractionOption role = option.getOptionByName("role").orElse(null);
+        if (role == null) return;
+        Role roleValue = role.getRoleValue().orElse(null);
+        if (roleValue == null) return;
+        String idRole = roleValue.getIdAsString();
+        System.out.println("AJOUT ROLE");
+
+        SlashCommandInteractionOption emoteOption = option.getOptionByName("emote").orElse(null);
+        if (emoteOption == null) return;
+        System.out.println("AJOUT ROLE");
+        System.out.println(emoteOption.getStringRepresentationValue().orElse(null));
+        String emote = emoteOption.getStringValue().orElse(null);
+        if (emote == null) return;
+        emote = ":" + emote + ":";
+        System.out.println("AJOUT ROLE");
+
+        SlashCommandInteractionOption descriptionOption = option.getOptionByName("description").orElse(null);
+        if (descriptionOption == null) return;
+        String description = descriptionOption.getStringValue().orElse(null);
+
+
+        System.out.println("AJOUT ROLE");
+        MenuRoleGestion instance = MenuRoleGestion.getInstance(idAsString);
+        instance.addRole(new fr.reminator.justicebot.commands.rolemenu.model.Role(idRole, emote, description));
+        instance.saveJson();
+        System.out.println("AJOUT ROLE");
     }
 
     private List<SelectMenuOption> getListeRoles(Server server) {

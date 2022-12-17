@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Deprecated
 public class MenuRolesListener implements MessageComponentCreateListener, ModalSubmitListener {
 
     private final String idChannelCreation;
@@ -69,7 +70,7 @@ public class MenuRolesListener implements MessageComponentCreateListener, ModalS
         if (emote == null) return;
 
         MenuRoleGestion menuRoleGestion = MenuRoleGestion.getInstance(idChannelOutput);
-        menuRoleGestion.withEmote(emote);
+        //menuRoleGestion.withEmote(emote);
 
 
         modalInteraction.respondLater(true).thenAccept(interactionOriginalResponseUpdater -> {
@@ -89,12 +90,15 @@ public class MenuRolesListener implements MessageComponentCreateListener, ModalS
         Role everyoneRole = server.getEveryoneRole();
 
         MenuRoleGestion menuRoleGestion = MenuRoleGestion.getInstance(idChannelOutput);
+        /*
         Set<String> rolesMenu = menuRoleGestion.getRoles();
 
         List<Role> roles = server.getRoles().stream().filter(role -> !role.equals(everyoneRole) && !rolesMenu.contains(role.getIdAsString())).collect(Collectors.toList());
         List<SelectMenuOption> content = new ArrayList<>(List.of(SelectMenuOption.create("Terminer", "null", "Sélectionne si tous les rôles du menu sont ajoutés.")));
         content.addAll(roles.stream().map(r -> SelectMenuOption.create(r.getName(), String.valueOf(r.getId()))).collect(Collectors.toList()));
         return content;
+         */
+        return null;
     }
 
     public void addRole(MessageComponentInteraction messageComponentInteraction) {
@@ -116,13 +120,15 @@ public class MenuRolesListener implements MessageComponentCreateListener, ModalS
             sendMenu();
             return;
         }
-
+        /*
         MenuRoleGestion menuRoleGestion = MenuRoleGestion.getInstance(idChannelOutput);
         menuRoleGestion.withRole(idRole);
 
         messageComponentInteraction.respondWithModal("emoteModal_menuRoles", "Entre l'émote pour le rôle sélectionné.",
                 ActionRow.of(TextInput.create(TextInputStyle.SHORT, "emote", "Émote", ":exemple:", "", true)));
 
+
+         */
     }
 
     private void sendMenu() {

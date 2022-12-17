@@ -13,7 +13,7 @@ public class MenuRoleViewEmbed implements MenuRoleView {
 
     @Override
     public void sendMenu(String idChannelOutput) {
-
+        /*
         MenuRoleGestion menuRoleGestion = MenuRoleGestion.getInstance(idChannelOutput);
         StringBuilder stringBuilder = new StringBuilder("**Menu de rôles**\n\n");
         menuRoleGestion.getMenu().forEach(e -> stringBuilder.append(e.getValue() + " : " + JusticeBot.api.getRoleById(e.getKey()).get().getName() + "\n"));
@@ -25,5 +25,7 @@ public class MenuRoleViewEmbed implements MenuRoleView {
                     // Il faut ajouter un listener emote
                     //JusticeBot.api.getMessageByLink("").get().thenAccept(m -> m.getReactionByEmoji("").get().get)
                 });
+
+         */
     }
 }

@@ -8,21 +8,19 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class MenuRoleGestion {
 
     private static final Map<String, MenuRoleGestion> instances = new HashMap<>();
-    private final Map<String, String> roles;
+    private final List<Role> roles;
     private String idRoleTemp;
     private String idChannel;
 
-    private JsonUtils jsonUtils;
+    private final JsonUtils jsonUtils;
 
     private MenuRoleGestion() {
-        roles = new HashMap<>();
+        roles = new ArrayList<>();
 
         File fileRoleMenu = JusticeBot.fileRoleMenu;
         this.jsonUtils = new JsonUtils(fileRoleMenu.getAbsoluteFile());
@@ -49,24 +47,12 @@ public class MenuRoleGestion {
         return menuRoleGestion;
     }
 
-    public MenuRoleGestion withRole(String idRole) {
-        idRoleTemp = idRole;
-        return this;
+    public void addRole(Role role) {
+        roles.add(role);
     }
 
-    public MenuRoleGestion withEmote(String emote) {
-
-        System.out.println(emote + "t coucou");
-        roles.put(idRoleTemp, emote);
-        return this;
-    }
-
-    public Set<String> getRoles() {
-        return roles.keySet();
-    }
-
-    public Set<Map.Entry<String, String>> getMenu() {
-        return roles.entrySet();
+    public List<Role> getRoles() {
+        return roles;
     }
 
     public void saveJson() {
@@ -75,12 +61,13 @@ public class MenuRoleGestion {
 
         JSONArray jsonChannel = new JSONArray();
 
-        roles.forEach((idRole, emote) -> {
-            System.out.println(emote);
-            JSONObject role = new JSONObject();
-            role.put("idRole", idRole);
-            role.put("emote", emote);
-            jsonChannel.put(role);
+        roles.forEach(role -> {
+            JSONObject roleJson = new JSONObject();
+            roleJson.put("idRole", role.getIdRole());
+            roleJson.put("emote", role.getEmote());
+            roleJson.put("description", role.getDescription());
+            System.out.println(roleJson + " " + role.getDescription());
+            jsonChannel.put(roleJson);
         });
 
         json.remove(idChannel);
@@ -102,10 +89,10 @@ public class MenuRoleGestion {
 
             String idRole = role.getString("idRole");
             String emote = role.getString("emote");
+            String description = role.getString("description");
 
-            roles.put(idRole, emote);
+            roles.add(new Role(idRole, emote, description));
         });
-        System.out.println(roles);
     }
 
     public void clear() {
