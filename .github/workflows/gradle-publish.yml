@@ -59,7 +59,7 @@ jobs:
         SSH_KEY: ${{ secrets.SSH_KEY }}
         SSH_HOST: ${{ secrets.SSH_HOST }}
     - name: Stop the bot
-      run: ssh azure "sudo pkill -f 'java -jar'"
+      run: ssh azure "sudo pkill -f 'java -jar /RemiBot/'"
       
     - name: Upload jar on Azure VM
       run: |
