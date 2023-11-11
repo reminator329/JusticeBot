@@ -1,12 +1,12 @@
 package fr.reminator.justicebot.commands.rolemenu.model;
 
-public class Role {
+public class MenuRoleRole {
 
     private String idRole;
     private String emote;
     private String description;
 
-    public Role(String id, String emote, String description) {
+    public MenuRoleRole(String id, String emote, String description) {
         this.idRole = id;
         this.emote = emote;
         this.description = description;
