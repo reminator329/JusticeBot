@@ -16,13 +16,13 @@ repositories {
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
-    implementation 'org.javacord:javacord:3.6.0'
+    implementation 'org.javacord:javacord:3.8.0'
     runtimeOnly 'org.apache.logging.log4j:log4j-core:2.19.0'
-    implementation('org.json:json:20220924')// https://mvnrepository.com/artifact/com.vdurmont/emoji-java
+    implementation('org.json:json:20230227')// https://mvnrepository.com/artifact/com.vdurmont/emoji-java
     implementation group: 'com.vdurmont', name: 'emoji-java', version: '4.0.0'
     
     runtimeOnly 'org.apache.logging.log4j:log4j-to-slf4j:2.17.0'
-    runtimeOnly 'ch.qos.logback:logback-classic:1.2.3'
+    runtimeOnly 'ch.qos.logback:logback-classic:1.2.9'
 }
 
 test {

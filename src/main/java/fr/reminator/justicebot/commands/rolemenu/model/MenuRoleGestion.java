@@ -3,7 +3,6 @@ package fr.reminator.justicebot.commands.rolemenu.model;
 import fr.reminator.justicebot.main.JusticeBot;
 import fr.reminator.justicebot.utils.JsonUtils;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -13,7 +12,7 @@ import java.util.*;
 public class MenuRoleGestion {
 
     private static final Map<String, MenuRoleGestion> instances = new HashMap<>();
-    private final List<Role> roles;
+    private final List<MenuRoleRole> roles;
     private String idRoleTemp;
     private String idChannel;
 
@@ -47,11 +46,11 @@ public class MenuRoleGestion {
         return menuRoleGestion;
     }
 
-    public void addRole(Role role) {
+    public void addRole(MenuRoleRole role) {
         roles.add(role);
     }
 
-    public List<Role> getRoles() {
+    public List<MenuRoleRole> getRoles() {
         return roles;
     }
 
@@ -91,7 +90,7 @@ public class MenuRoleGestion {
             String emote = role.getString("emote");
             String description = role.getString("description");
 
-            roles.add(new Role(idRole, emote, description));
+            roles.add(new MenuRoleRole(idRole, emote, description));
         });
     }
 

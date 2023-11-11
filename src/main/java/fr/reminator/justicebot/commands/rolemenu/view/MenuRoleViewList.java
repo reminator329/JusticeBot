@@ -1,6 +1,7 @@
 package fr.reminator.justicebot.commands.rolemenu.view;
 
 import com.vdurmont.emoji.EmojiParser;
+import fr.reminator.justicebot.commands.rolemenu.model.MenuRoleRole;
 import fr.reminator.justicebot.commands.rolemenu.view.listeners.ButtonMenuRolesListener;
 import fr.reminator.justicebot.commands.rolemenu.model.MenuRoleGestion;
 import fr.reminator.justicebot.commands.rolemenu.view.listeners.ListRoleListener;
@@ -10,6 +11,7 @@ import org.javacord.api.entity.channel.ServerChannel;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.emoji.Emoji;
 import org.javacord.api.entity.message.MessageBuilder;
+import org.javacord.api.entity.message.MessageFlag;
 import org.javacord.api.entity.message.component.*;
 import org.javacord.api.entity.permission.Role;
 import org.javacord.api.entity.server.Server;
@@ -17,9 +19,7 @@ import org.javacord.api.entity.user.User;
 import org.javacord.api.interaction.ButtonInteraction;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class MenuRoleViewList implements MenuRoleView {
@@ -60,7 +60,15 @@ public class MenuRoleViewList implements MenuRoleView {
 
         MenuRoleGestion menuRoleGestion = MenuRoleGestion.getInstance(idChannelOutput);
         menuRoleGestion.updateFromJson();
-        List<fr.reminator.justicebot.commands.rolemenu.model.Role> roles = menuRoleGestion.getRoles();
+        List<MenuRoleRole> roles = menuRoleGestion.getRoles();
+
+        if (roles.isEmpty()) {
+            buttonInteraction.createImmediateResponder()
+                    .setFlags(MessageFlag.EPHEMERAL)
+                    .setContent("Pas de rôle disponible !")
+                    .respond();
+            return;
+        }
 
         ServerChannel serverChannel = textChannel.asServerChannel().orElse(null);
         Server server = serverChannel.getServer();
@@ -69,8 +77,7 @@ public class MenuRoleViewList implements MenuRoleView {
             buttonInteraction.createFollowupMessageBuilder()
                     .addComponents(
                             ActionRow.of(
-                                    new SelectMenuBuilder()
-                                            .setCustomId(listCustomId)
+                                    new SelectMenuBuilder(ComponentType.TEXT_INPUT, listCustomId)
                                             .setPlaceholder("Choisis tes rôles")
                                             .setMinimumValues(0)
                                             .setMaximumValues(roles.size())

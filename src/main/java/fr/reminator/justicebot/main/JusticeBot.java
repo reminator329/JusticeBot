@@ -27,6 +27,7 @@ public class JusticeBot {
         api.bulkOverwriteGlobalApplicationCommands(Commands.all()).join();
 
         api.addSlashCommandCreateListener(new CommandListener());
+
         // Enable debug logging
         FallbackLoggerConfiguration.setDebug(true);
 

@@ -1,15 +1,12 @@
 package fr.reminator.justicebot.commands.rolemenu;
 
-import com.vdurmont.emoji.EmojiParser;
 import fr.reminator.justicebot.commands.Command;
-import fr.reminator.justicebot.commands.rolemenu.listeners.MenuRolesListener;
 import fr.reminator.justicebot.commands.rolemenu.model.MenuRoleGestion;
+import fr.reminator.justicebot.commands.rolemenu.model.MenuRoleRole;
 import fr.reminator.justicebot.commands.rolemenu.view.MenuRoleView;
 import fr.reminator.justicebot.commands.rolemenu.view.MenuRoleViewList;
-import fr.reminator.justicebot.main.JusticeBot;
 import org.javacord.api.entity.channel.ChannelType;
 import org.javacord.api.entity.channel.ServerChannel;
-import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.MessageFlag;
 import org.javacord.api.entity.message.component.*;
 import org.javacord.api.entity.permission.PermissionType;
@@ -134,7 +131,7 @@ public class CommandRoleMenu extends Command {
 
         System.out.println("AJOUT ROLE");
         MenuRoleGestion instance = MenuRoleGestion.getInstance(idAsString);
-        instance.addRole(new fr.reminator.justicebot.commands.rolemenu.model.Role(idRole, emote, description));
+        instance.addRole(new MenuRoleRole(idRole, emote, description));
         instance.saveJson();
         System.out.println("AJOUT ROLE");
     }
