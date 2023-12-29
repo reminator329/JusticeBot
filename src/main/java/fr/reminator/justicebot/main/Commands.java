@@ -1,6 +1,7 @@
 package fr.reminator.justicebot.main;
 
 import fr.reminator.justicebot.commands.*;
+import fr.reminator.justicebot.commands.mystery_word.MysteryWordCommand;
 import fr.reminator.justicebot.commands.plus_moins.PlusMoinsCommand;
 import fr.reminator.justicebot.commands.suggesions.CommandSuggestions;
 import fr.reminator.justicebot.commands.ping.CommandPing;
@@ -18,6 +19,7 @@ public enum Commands {
     SUGGESTION(new CommandSuggest()),
     ROLE_MENU(new CommandRoleMenu()),
     PLUSMOINS(new PlusMoinsCommand()),
+    MYSTERY_WORD(new MysteryWordCommand()),
     ;
 
     private final Command command;
