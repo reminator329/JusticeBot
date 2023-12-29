@@ -27,7 +27,8 @@ public class PlusMoinsCommand extends Command {
     private static final String withHintOptionName = "withHint";
 
     // Autres variables
-    private static final int waitingTime = 10;
+    // TODO mettre une option de commande
+    private static final int waitingTime = 30;
 
     @Override
     public String getLabel() {
@@ -81,7 +82,6 @@ public class PlusMoinsCommand extends Command {
         if (roleOption == null) return;
         Role roleGame = roleOption.getRoleValue().orElse(null);
         if (roleGame == null) return;
-        String idRole = roleGame.getIdAsString();
 
         // Valeur minimale
         SlashCommandInteractionOption minValOption = slashCommandInteraction.getOptionByName(minValOptionName).orElse(null);
@@ -102,7 +102,7 @@ public class PlusMoinsCommand extends Command {
 
         // With help
         boolean withHintDefaultValue = true;
-        boolean withHint = withHintDefaultValue;
+        boolean withHint = true;
         SlashCommandInteractionOption withHelpOption = slashCommandInteraction.getOptionByName(withHintOptionName).orElse(null);
         if (withHelpOption != null) {
             withHint = withHelpOption.getBooleanValue().orElse(withHintDefaultValue);
@@ -142,13 +142,11 @@ public class PlusMoinsCommand extends Command {
 
         // ***** Démarrage d'un timer
         gameUtils.sendTimer(waitingTime);
-        System.out.println("BEFORE LOCK");
         try {
             gameUtils.getTimerLock().doWait();
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
-        System.out.println("AFTER LOCK");
 
         // Ajout d'un listener qui va écouter les réponses des joueurs
         JusticeBot.api.addListener(new PlusMoinsMessageCreateListener(gameUtils));
